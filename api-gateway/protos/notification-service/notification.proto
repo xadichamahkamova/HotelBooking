@@ -1,0 +1,16 @@
+syntax="proto3";
+
+option go_package = "./genproto/notificationpb";
+
+service NotificationService {
+    rpc SendEmail(SendEmailRequest) returns (SendEmailResponse);
+}
+
+message SendEmailRequest {
+    string to = 1;
+    string hotel_name = 2;
+}
+
+message SendEmailResponse {
+    string message = 1;
+}

@@ -1,0 +1,10 @@
+service:
+  host: localhost
+  port: 8002
+
+postgres:
+  host: postgres
+  port: 5432
+  user: postgres
+  password: 1
+  database: postgres 

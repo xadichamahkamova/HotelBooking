@@ -1,0 +1,480 @@
+basePath: /
+definitions:
+  models.AvailabilityRooms:
+    properties:
+      available_rooms:
+        type: integer
+      room_type:
+        type: string
+    type: object
+  models.Booking:
+    properties:
+      booking_id:
+        type: string
+      check_in_date:
+        type: string
+      check_out_date:
+        type: string
+      hotel_id:
+        type: string
+      room_type:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: string
+    type: object
+  models.CancelBookingResponse:
+    properties:
+      booking_id:
+        type: string
+      message:
+        type: string
+    type: object
+  models.CreateBookingRequest:
+    properties:
+      check_in_date:
+        type: string
+      check_out_date:
+        type: string
+      hotel_id:
+        type: string
+      room_type:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: string
+    type: object
+  models.GetAvailabilityRoomsResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/models.AvailabilityRooms'
+        type: array
+    type: object
+  models.GetDetailsOfHotelResponse:
+    properties:
+      address:
+        type: string
+      hotel_id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      rating:
+        type: integer
+      rooms:
+        items:
+          $ref: '#/definitions/models.Room'
+        type: array
+    type: object
+  models.Hotel:
+    properties:
+      address:
+        type: string
+      hotel_id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      rating:
+        type: integer
+    type: object
+  models.ListBookingOfUserResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/models.UsersBooking'
+        type: array
+    type: object
+  models.ListOfHotelResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/models.Hotel'
+        type: array
+    type: object
+  models.LoginUserRequest:
+    properties:
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.RegisterUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.RegisterUserResponse:
+    properties:
+      email:
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.Room:
+    properties:
+      availability:
+        type: boolean
+      price_per_night:
+        type: number
+      room_number:
+        type: integer
+      room_type:
+        type: string
+    type: object
+  models.UpdateBookingRequest:
+    properties:
+      booking_id:
+        type: string
+      check_in_date:
+        type: string
+      check_out_date:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+    type: object
+  models.UsersBooking:
+    properties:
+      booking_id:
+        type: string
+      check_in_date:
+        type: string
+      check_out_date:
+        type: string
+      hotel_id:
+        type: string
+      room_type:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: string
+    type: object
+  token.Tokens:
+    properties:
+      refreshToken:
+        type: string
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: Api-gateway service
+  version: "1.0"
+paths:
+  /api/bookings:
+    post:
+      consumes:
+      - application/json
+      description: This method creates a new booking
+      parameters:
+      - description: Booking
+        in: body
+        name: booking
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateBookingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: CREATE BOOKINGS
+      tags:
+      - BOOKING
+  /api/bookings/{id}:
+    delete:
+      description: This method cancels an existing booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CancelBookingResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: CANCEL BOOKING
+      tags:
+      - BOOKING
+    get:
+      description: This method retrieves the details of a booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Booking'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: GET BOOKING DETAILS
+      tags:
+      - BOOKING
+    put:
+      consumes:
+      - application/json
+      description: This method updates an existing booking
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Booking
+        in: body
+        name: booking
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateBookingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Booking'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: UPDATE BOOKINGS
+      tags:
+      - BOOKING
+  /api/hotels:
+    get:
+      consumes:
+      - application/json
+      description: This method lists all hotels
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ListOfHotelResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: LIST OF HOTELS
+      tags:
+      - HOTEL
+  /api/hotels/{id}:
+    get:
+      consumes:
+      - application/json
+      description: This method retrieves details of a hotel by its ID
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetDetailsOfHotelResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: GET DETAILS OF HOTEL
+      tags:
+      - HOTEL
+  /api/hotels/{id}/rooms/availability:
+    get:
+      consumes:
+      - application/json
+      description: This method retrieves room availability by hotel ID
+      parameters:
+      - description: Hotel ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAvailabilityRoomsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: GET AVAILABILITY OF ROOMS
+      tags:
+      - HOTEL
+  /api/users:
+    post:
+      consumes:
+      - application/json
+      description: This method registers a new user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: REGISTER USERS
+      tags:
+      - AUTH
+  /api/users/{id}/bookings:
+    get:
+      description: This method lists all bookings of a user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ListBookingOfUserResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: LIST USER BOOKINGS
+      tags:
+      - BOOKING
+  /api/users/login:
+    post:
+      consumes:
+      - application/json
+      description: This method login users
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/token.Tokens'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: LOGIN USERS
+      tags:
+      - AUTH
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

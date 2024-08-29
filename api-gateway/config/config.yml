@@ -1,0 +1,29 @@
+api_gateway:
+  host: api_gateway
+  port: 9000
+
+token:
+  key: secret-key
+
+kafka:
+  host: broker
+  port: 9092
+  topic: notifications
+
+file:
+  cert: ./tls/cert.pem
+  key: ./tls/key.pem
+
+services:
+  user_service:
+    host: user_service
+    port: 8001
+  hotel_service:
+    host: hotel_service
+    port: 8002
+  booking_service:
+    host: booking_service
+    port: 8003
+  notification_service:
+    host: notification_service
+    port: 8004

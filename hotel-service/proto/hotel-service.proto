@@ -1,0 +1,55 @@
+syntax="proto3";
+
+option go_package = "./genproto/hotelpb";
+
+service HotelService {
+    rpc ListOfHotel(ListOfHotelRequest) returns (ListOfHotelResponse);
+    rpc GetDetailsOfHotel(GetDetailsOfHotelRequest) returns (GetDetailsOfHotelResponse);
+    rpc GetAvailabilityRooms(GetAvailabilityRoomsRequest) returns (GetAvailabilityRoomsResponse);
+}
+
+message Room {
+    int32 room_number = 1;
+    string room_type = 2;
+    float price_per_night = 3;
+    bool availability = 4;
+}
+
+message Hotel {
+    string hotel_id = 1;
+    string name = 2;
+    string location = 3;
+    int32 rating = 4;
+    string address = 5;
+}
+
+message ListOfHotelRequest {}
+message ListOfHotelResponse {
+    repeated Hotel list = 1;
+}
+
+message GetDetailsOfHotelRequest {
+    string hotel_id = 1;
+}
+
+message GetDetailsOfHotelResponse {
+    string hotel_id = 1;
+    string name = 2;
+    string location = 3;
+    int32 rating = 4;
+    string address = 5;
+    repeated Room rooms = 6;
+}
+
+message GetAvailabilityRoomsRequest {
+    string hotel_id = 1;
+}
+
+message AvailabilityRooms {
+    string room_type = 1;
+    int32 available_rooms = 2;
+}
+
+message GetAvailabilityRoomsResponse {
+    repeated AvailabilityRooms list = 1;
+}

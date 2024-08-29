@@ -1,0 +1,72 @@
+syntax="proto3";
+
+option go_package = "./genproto/bookingpb";
+
+service BookingService {
+    rpc CreateBooking(CreateBookingRequest) returns (Booking);
+    rpc GetDetailsOfBooking(GetDetailsOfBookingRequest) returns (Booking);
+    rpc UpdateBooking(UpdateBookingRequest) returns (Booking);
+    rpc CancelBooking(CancelBookingRequest) returns (CancelBookingResponse);
+    rpc ListBookingOfUsers(ListBookingOfUserRequest) returns (ListBookingOfUserResponse);
+}
+
+message Booking {
+    string booking_id = 1;
+    string user_id = 2;
+    string hotel_id = 3;
+    string room_type = 4;
+    string check_in_date = 5;
+    string check_out_date = 6;
+    float total_amount = 7;
+    string status = 8;
+}
+
+message CreateBookingRequest {
+    string user_id = 1;
+    string hotel_id = 2;
+    string room_type = 3;
+    string check_in_date = 4;
+    string check_out_date = 5;
+    float total_amount = 6;
+}
+
+
+message GetDetailsOfBookingRequest {
+    string booking_id = 1;
+}
+
+message UpdateBookingRequest {
+    string booking_id = 1;
+    string check_in_date = 2;
+    string check_out_date = 3;
+    float total_amount = 4;
+    string status = 5;
+}
+
+message CancelBookingRequest {
+    string booking_id = 1;
+}
+
+message CancelBookingResponse {
+    string message = 1;
+    string booking_id = 2;
+}
+
+message ListBookingOfUserRequest {
+    string user_id = 1;
+}
+
+message UsersBooking {
+    string user_id = 1;
+    string booking_id = 2;
+    string hotel_id = 3;
+    string room_type = 4;
+    string check_in_date = 5;
+    string check_out_date = 6;
+    float total_amount = 7;
+    string status = 8;
+}
+
+message ListBookingOfUserResponse {
+    repeated UsersBooking list = 1;
+}
