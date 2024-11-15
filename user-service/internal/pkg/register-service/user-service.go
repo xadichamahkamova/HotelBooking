@@ -16,7 +16,7 @@ type Service struct {
 	Service *service.UserService
 }
 
-func NewGRPCHotelService(service *service.UserService) *Service {
+func NewGRPCUserService(service *service.UserService) *Service {
 	return &Service{
 		Service: service,
 	}

@@ -37,7 +37,7 @@ func main() {
  	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		r := router.NewGRPCHotelService(service)
+		r := router.NewGRPCUserService(service)
 		if err := r.RUN(*cfg); err != nil {
 			logger.Fatal(err)
 		}
